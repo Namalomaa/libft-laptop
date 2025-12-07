@@ -12,12 +12,12 @@
 
 #include "libft.h"
 
-static	size_t	ft_inset(char c, char const *set)
+static	size_t inset(char c, char const *set)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < ft_strlen(set))
+	while (set[i])
 	{
 		if (c == set[i])
 			return (1);
@@ -26,53 +26,85 @@ static	size_t	ft_inset(char c, char const *set)
 	return (0);
 }
 
-static size_t	get_start(char const *s1, char const *set, size_t start)
-{
-	while (s1[start])
-	{
-		if (ft_inset(s1[start], set))
-			start++;
-		else
-			break ;
-	}
-	return (start);
-}
-
-static size_t	get_end(char const *s1, char const *set, size_t end)
-{
-	while (end > 0)
-	{
-		if (ft_inset(s1[end], set))
-			end --;
-		else
-			break ;
-	}
-	return (end);
-}
-
 char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*trimmed;
-	size_t	i;
 	size_t	start;
 	size_t	end;
 
+	if (!s1 || !set)
+		return (NULL);
 	start = 0;
-	if (ft_inset(s1[start], set))
-		start = get_start(s1, set, start);
-	end = ft_strlen(s1) - 1;
-	if (ft_inset(s1[end], set))
-		end = get_end(s1, set, end);
-	trimmed = (char *)malloc(end - start + 1);
+	while (s1[start] && inset(s1[start] , set))
+		start ++;
+	end = ft_strlen(s1);
+	if (end != 0)
+		end --;
+	while (end > start && inset (s1[end], set))
+		end --;
+	if (start > end)
+		return (ft_strdup(""));
+	trimmed = (char *)malloc(end - start + 2);
 	if (!trimmed)
 		return (NULL);
-	i = 0;
-	while (start < end)
-	{
-		trimmed[i] = s1[start];
-		i ++;
-		start ++;
-	}
-	trimmed[i] = '\0';
+	ft_memcpy(trimmed, s1 + start, end - start + 1);
+	trimmed[end - start + 1] = '\0';
 	return (trimmed);
+}
+
+#include <stdio.h>
+
+int main(void)
+{
+    char *result;
+
+    // 1️⃣ Normal case: trim from both ends
+    result = ft_strtrim("  hello  ", " ");
+    printf("'%s'\n", result); // Expected: 'hello'
+    free(result);
+
+    // 2️⃣ Trim multiple characters
+    result = ft_strtrim("---hello---", "-");
+    printf("'%s'\n", result); // Expected: 'hello'
+    free(result);
+
+    // 3️⃣ Trim a set of characters
+    result = ft_strtrim("xyxhelloxyx", "xy");
+    printf("'%s'\n", result); // Expected: 'hello'
+    free(result);
+
+    // 4️⃣ No trimming needed
+    result = ft_strtrim("hello", " ");
+    printf("'%s'\n", result); // Expected: 'hello'
+    free(result);
+
+    // 5️⃣ Fully trimmed string
+    result = ft_strtrim("xxxxxx", "x");
+    printf("'%s'\n", result); // Expected: '' (empty string)
+    free(result);
+
+    // 6️⃣ Empty string input
+    result = ft_strtrim("", " ");
+    printf("'%s'\n", result); // Expected: '' (empty string)
+    free(result);
+
+    // 7️⃣ Empty set
+    result = ft_strtrim(" hello ", "");
+    printf("'%s'\n", result); // Expected: ' hello ' (unchanged)
+    free(result);
+
+    // 8️⃣ NULL input for s1
+    result = ft_strtrim(NULL, " ");
+    printf("%p\n", result); // Expected: 0x0 (NULL)
+
+    // 9️⃣ NULL input for set
+    result = ft_strtrim("hello", NULL);
+    printf("%p\n", result); // Expected: 0x0 (NULL)
+
+    // 🔟 Trimming special characters
+    result = ft_strtrim("\t\nhello\n\t", "\n\t");
+    printf("'%s'\n", result); // Expected: 'hello'
+    free(result);
+
+    return 0;
 }
