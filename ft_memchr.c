@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: namaloma <namaloma@learner.42.tech>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/24 09:32:54 by namaloma          #+#    #+#             */
+/*   Updated: 2025/11/24 11:46:13 by namaloma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include "libft.h"
 
@@ -15,7 +27,7 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	return (NULL);
 }
 
-#include <string.h>
+/*#include <string.h>
 
 int main(void)
 {
@@ -29,4 +41,4 @@ int main(void)
            : printf ("character '%c'(%i) not found\n", c, c);
     }
     return 0;
-}
+}*/

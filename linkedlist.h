@@ -11,10 +11,13 @@
 /* ************************************************************************** */
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
+
+#include <stdlib.h>
+#include <stdio.h>
 // indivisual node in the chain
 typedef struct node
 {
-	int data1;
+	int data;
 	struct node *next;
 }node_t;
 
@@ -24,16 +27,17 @@ typedef struct node
 typedef struct linkedlist
 {
 	node_t *head;//hold a pointer to what ever the first node is
-}linked_list_t;
+}linkedlist_t;
 
 // malloc a new linkedlist then
 // return a pointer to that linked list
 
-linkedlist_t *	CreatLinkedListOffiveItems();
+linkedlist_t *CreatLinkedListOffiveItems();
+linkedlist_t	*CreatLinkedList();
 
 //print all nodes
 
-void printLinkedList(linkedlist_t *list);
+void PrintLinkedList(linkedlist_t *list);
 
 //Walk through the linked list and delete all node
 

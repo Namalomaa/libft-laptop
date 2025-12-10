@@ -35,6 +35,16 @@ static char	*malloc_word(const char *str, char c)
 	return (word);
 }
 
+static void	free_split(char **str, size_t i)
+{
+	while (i > 0)
+	{
+		i--;
+		free(str[i]);
+	}
+	free(str);
+}
+
 static size_t	count_words(const char *str, char c)
 {
 	size_t	len;
@@ -59,6 +69,8 @@ char	**ft_split(const char *str, char c)
 	char	**splitted;
 	size_t	i;
 
+	if (!str)
+		return (NULL);
 	splitted = (char **)malloc(sizeof(char *) * (count_words(str, c) + 1));
 	if (!splitted)
 		return (NULL);
@@ -71,7 +83,7 @@ char	**ft_split(const char *str, char c)
 		{
 			splitted[i] = malloc_word(str, c);
 			if (!splitted[i])
-				return (NULL);
+				return (free_split(splitted, i), NULL);
 			i++;
 			while (*str && *str != c)
 				str++;
